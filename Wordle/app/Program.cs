@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 
-class WordleWordProcessor{
+class WordleWordProcessor {
 
     //Stores total # of letters(5 * # of words).
     static int totalLetters;
@@ -23,10 +23,10 @@ class WordleWordProcessor{
     static ArrayList GrayLetters = new ArrayList();
     
     //Resets all structures without exiting program.
-    public static void reset(){
+    public static void reset() {
         WordleValues.Clear();
         LetterOccurrences.Clear();
-        for(int i = 0; i < GreenLetters.Length; i++){
+        for (int i = 0; i < GreenLetters.Length; i++) {
                 GreenLetters[i] = '\0';
         }
         YellowLetters.Clear();
@@ -37,20 +37,20 @@ class WordleWordProcessor{
     Idea: Try to find words that match criteria we have, then pick the one with the highest strength value.
     Pass in string guess and string tileColors(ex. 01221), 0=gray, 1=yellow, 2=green, then make a guess.
     */
-    public static string generateGuess(string guess, string tiles){
+    public static string generateGuess(string guess, string tiles) {
         ArrayList Possibilities = new ArrayList();
-        for(int i = 0; i < guess.Length; i++){
+        for(int i = 0; i < guess.Length; i++) {
             //Console.WriteLine("tiles[i] is " + tiles[i]);
-            if(tiles[i].Equals('2')){ //Checks for green letters and adds to GreenLetters if applicable.
+            if (tiles[i].Equals('2')) { //Checks for green letters and adds to GreenLetters if applicable.
                 //Console.WriteLine("Green Located");
                 GreenLetters[i] = guess[i];
             }
-            else if(tiles[i].Equals('1')){ //Checks for yellow letters at index i and adds to YellowLetters with said index.
+            else if (tiles[i].Equals('1')) { //Checks for yellow letters at index i and adds to YellowLetters with said index.
                 //Console.WriteLine("Yellow Located");
-                if(!YellowLetters.ContainsKey(guess[i])){ //If char is not already in list, add to the list with the index.
+                if (!YellowLetters.ContainsKey(guess[i])) { //If char is not already in list, add to the list with the index.
                     YellowLetters.Add(guess[i], new ArrayList{i});
                 }
-                else if(!YellowLetters[guess[i]].Contains(i)){ //If char is already in the list, add to the ArrayList of indexes.
+                else if (!YellowLetters[guess[i]].Contains(i)) { //If char is already in the list, add to the ArrayList of indexes.
                     YellowLetters[guess[i]].Add(i);
                 }
             }
@@ -62,36 +62,36 @@ class WordleWordProcessor{
         //Now we have an updated GrayLetters, YellowLetters(stores index) and GreenLetters(stores index). We can now form our next guess.
         //Need to find words that contain all yellows not at prior spots, and all greens at known spots, and no grays.
         bool possible = true;
-        foreach(string str in WordleValues.Keys){
-            for(int i = 0; i < str.Length; i++){
+        foreach (string str in WordleValues.Keys) {
+            for (int i = 0; i < str.Length; i++) {
                 possible = true;
-                foreach(char c in YellowLetters.Keys){ //If str does not contain a known yellow letter at all
-                    if(!str.Contains(c)){
+                foreach (char c in YellowLetters.Keys) { //If str does not contain a known yellow letter at all
+                    if (!str.Contains(c)) {
                         //Console.Write("str does not contain a known yellow.");
                         possible = false;
                         goto Jump;
                     }
                 }
-                if(YellowLetters.ContainsKey(str[i])){
-                    if((YellowLetters[str[i]].Contains(i))){ //If str contains a known yellow letter, but at a known yellow index
+                if (YellowLetters.ContainsKey(str[i])) {
+                    if ((YellowLetters[str[i]].Contains(i))) { //If str contains a known yellow letter, but at a known yellow index
                         //Console.Write("str contains a known yellow at the wrong index.");
                         possible = false;
                         goto Jump;
                     }
                 }
-                if(GrayLetters.Contains(str[i])){ //If str contains a known gray letter
+                if (GrayLetters.Contains(str[i])) { //If str contains a known gray letter
                     //Console.Write("str contains a known gray letter.");
                     possible = false;
                     goto Jump;
                 }
-                if(GreenLetters[i] != 0 && str[i] != GreenLetters[i]){ //If green letter exists at index i and str doesn't match it
+                if (GreenLetters[i] != 0 && str[i] != GreenLetters[i]) { //If green letter exists at index i and str doesn't match it
                     //Console.Write("str is missing a green letter at index " + i + ".");
                     possible = false;
                     goto Jump;
                 }
             }
             Jump: //Serves as a break of sorts.
-            if(possible){
+            if (possible) {
                 //Console.WriteLine("Located possible word! ");
                 Possibilities.Add(str);
             }
@@ -100,14 +100,14 @@ class WordleWordProcessor{
         //TESTING: Print contents of all structures storing tile colors
         // Console.WriteLine();
         // Console.Write("GreenLetters contains: [");
-        // foreach(char c in GreenLetters){
+        // foreach(char c in GreenLetters) {
         //     Console.Write(c + " ");
         // }
         // Console.WriteLine("]");
         // Console.Write("YellowLetters contains: [");
-        // foreach(KeyValuePair<char,ArrayList> kv in YellowLetters){ 
+        // foreach(KeyValuePair<char,ArrayList> kv in YellowLetters) { 
         //     Console.Write(kv.Key + ": ");
-        //     foreach(int i in kv.Value){
+        //     foreach(int i in kv.Value) {
         //         Console.Write(i + " ");
         //     }
         // }
@@ -116,9 +116,9 @@ class WordleWordProcessor{
         double highest = 0;
         string output = "default_value";
         //Console.WriteLine("Possibilities size is " + Possibilities.Count);
-        foreach(string s in Possibilities){
+        foreach (string s in Possibilities) {
             //Console.WriteLine(s + ": " + WordleValues[s]);
-            if(WordleValues[s] > highest){
+            if (WordleValues[s] > highest) {
                 highest = WordleValues[s];
                 output = s;
             }
@@ -126,21 +126,21 @@ class WordleWordProcessor{
         //Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
         return output;
     }
-    public static void Main(string[] args){
+    public static void Main (string[] args) {
         Start:
         bool solved = false;
         //Add each letter with initial frequency 0
-        for(int i = 97; i <= 122; i++){
+        for (int i = 'a'; i <= 'z'; i++) { // NOTE: uhhh this might not work in C#, but i thought it looked more readable
             LetterOccurrences.Add(Convert.ToChar(i), 0);
         }
-        try{
+        try {
             using (StreamReader sr = new StreamReader("WordList.txt"))
             {
                 string? line;
                 // Adds all words into a Dictionary of <Word,Value> pairing. Sets initial value to -1.
                 while((line = sr.ReadLine()) != null)
                 {
-                    if(!(WordleValues.ContainsKey(line))){
+                    if (!(WordleValues.ContainsKey(line))) {
                         WordleValues.Add(line, -1);
                     }
                 }
@@ -150,14 +150,14 @@ class WordleWordProcessor{
             totalLetters = WordleValues.Count*5;
 
             //Add all the letters in all given words to LetterOccurrences
-            foreach(string str in WordleValues.Keys){
-                foreach(char c in str){
+            foreach (string str in WordleValues.Keys) {
+                foreach (char c in str) {
                     LetterOccurrences[c]++;
                 }
             }
 
             //TESTING: For each character, print its occurrence count. 
-            // foreach(KeyValuePair<char, int> kv in LetterOccurrences){
+            // foreach(KeyValuePair<char, int> kv in LetterOccurrences) {
             //     Console.WriteLine(kv.Key + ": " + kv.Value);
             // }
 
@@ -170,11 +170,11 @@ class WordleWordProcessor{
             
             double OccurrenceSum = 0;
             ArrayList visited = new ArrayList();
-            foreach(string str in WordleValues.Keys){
+            foreach (string str in WordleValues.Keys) {
                 OccurrenceSum = 0;
                 visited.Clear();
-                foreach(char c in str){
-                    if(!visited.Contains(c)){
+                foreach (char c in str) {
+                    if (!visited.Contains(c)) {
                         OccurrenceSum += LetterOccurrences[c];
                     }
                     visited.Add(c);
@@ -183,7 +183,7 @@ class WordleWordProcessor{
             }
 
             //TESTING: Print in ascending strength value order.
-            // foreach (KeyValuePair<string,double> kv in WordleValues.OrderBy(key=> key.Value)){ 
+            // foreach (KeyValuePair<string,double> kv in WordleValues.OrderBy(key=> key.Value)) { 
             //     Console.WriteLine(kv.Key + ": " + kv.Value);
             // }
 
@@ -191,27 +191,27 @@ class WordleWordProcessor{
 
             //TESTING: audio vs penis
             // Console.Write("audio: " + WordleValues["audio"] + " letters: ");
-            // foreach(char c in "audio"){
+            // foreach(char c in "audio") {
             //     Console.Write(c + ": " + LetterOccurrences[c] + "  ");
             // }
             // Console.WriteLine();
             // Console.Write("penis: " + WordleValues["penis"] + " letters: ");
-            // foreach(char c in "penis"){
+            // foreach(char c in "penis") {
             //     Console.Write(c + ": " + LetterOccurrences[c] + "  ");
             // }
 
             string guess;
             string tiles;
             //Console.WriteLine("hello!");
-            while(!solved){
+            while (!solved) {
                 Console.WriteLine("Enter input or command: ");
                 string? line = Console.ReadLine(); //Takes in input as one string
-                if(line == "exit"){ //Exit program
+                if (line == "exit") { //Exit program
                     solved = true;
                     Console.WriteLine("Thanks for using me!");
                     break;
                 }
-                else if(line == "reset"){ //Reset all structures without exiting program
+                else if (line == "reset") { //Reset all structures without exiting program
                     reset();
                     goto Start;
                 }
@@ -223,7 +223,7 @@ class WordleWordProcessor{
                 Console.WriteLine("Try guessing " + generateGuess(guess, tiles) + ".");
             }
         }
-        catch (Exception e){
+        catch (Exception e) {
             Console.WriteLine("error: " + e.Message);
         }
     }
