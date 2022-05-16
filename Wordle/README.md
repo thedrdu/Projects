@@ -8,7 +8,7 @@ ex: "tears 12210"
 
 The algorithm will give you the next best word to guess.
 
-###Other commands:
+##Other commands:
 exit - exits program
 reset - resets all constructors without exiting program.
 
