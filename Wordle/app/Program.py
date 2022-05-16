@@ -30,15 +30,30 @@ def generateGuess(guess, tiles):
             gray_letters.append(guess[i])
     possible = True
     for str in wordle_values.keys():
-        for i, c in enumerate(str):
-            possible = True
-            for c in yellow_letters.keys():
+        possible = True
+        for c in yellow_letters.keys(): #If str does not contain a known yellow letter at all
                 if not c in str:
                     possible = False
-                    #goto Jump
-            if str[i] in yellow_letters.keys():
-                
-    
+                    break
+        for i, c in enumerate(str):
+            if str[i] in yellow_letters.keys(): #If str contains a known yellow letter, but at a known yellow index
+                possible = False
+                #goto Jump
+            if str[i] in gray_letters:
+                possible = False
+                break
+            if not green_letters[i] == ' ' and not str[i] == green_letters[i]: #If green letter exists at index i and str doesn't match it
+                possible = False
+                break
+        if possible:
+            possibilities.append(str)
+    highest = 0
+    output = "default_value"
+    for s in possibilities:
+        if wordle_values[s] > highest:
+            highest = wordle_values[s]
+            output = s
+    return output
             
             
 
