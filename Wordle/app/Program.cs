@@ -128,7 +128,6 @@ class WordleWordProcessor{
         for(int i = 97; i <= 122; i++){
             LetterOccurrences.Add(Convert.ToChar(i), 0);
         }
-
         try{
             // Create an instance of StreamReader to read from a file.
             using (StreamReader sr = new StreamReader("WordList.txt"))
@@ -196,6 +195,7 @@ class WordleWordProcessor{
                 tiles = data[1]; //second input
                 if(tiles == "22222"){
                     solved = true;
+                    Console.WriteLine("Solved! The word is: " + guess);
                 }
                 Console.WriteLine("guess is " + guess + ", tiles is " + tiles);
                 Console.WriteLine(generateGuess(guess, tiles));
