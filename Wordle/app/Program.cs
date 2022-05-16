@@ -15,9 +15,11 @@ class WordleWordProcessor{
     //Stores occurrences of each letter.
     static Dictionary<char, int> LetterOccurrences = new Dictionary<char, int>();
 
-    //Need some struct that stores green/yellow letters and their index
+    //Stores characters with a green tile at the correct final index.
     static char[] GreenLetters = new char[5];
+    //Stores character and an ArrayList of indexes(int).
     static Dictionary<char, ArrayList> YellowLetters = new Dictionary<char, ArrayList>();
+    //Stores all characters with a gray tile.
     static ArrayList GrayLetters = new ArrayList();
     
 
@@ -67,7 +69,7 @@ class WordleWordProcessor{
                     }
                 }
                 if(YellowLetters.ContainsKey(str[i])){
-                    if((YellowLetters[str[i]].Contains(i))){//If str contains a known yellow letter, but at a known yellow index
+                    if((YellowLetters[str[i]].Contains(i))){ //If str contains a known yellow letter, but at a known yellow index
                         //Console.Write("str contains a known yellow at the wrong index.");
                         possible = false;
                         goto Jump;
@@ -76,16 +78,15 @@ class WordleWordProcessor{
                 if(GrayLetters.Contains(str[i])){ //If str contains a known gray letter
                     //Console.Write("str contains a known gray letter.");
                     possible = false;
-                    break;
+                    goto Jump;
                 }
                 if(GreenLetters[i] != 0 && str[i] != GreenLetters[i]){ //If green letter exists at index i and str doesn't match it
                     //Console.Write("str is missing a green letter at index " + i + ".");
                     possible = false;
-                    break;
+                    goto Jump;
                 }
-                
             }
-            Jump: continue;
+            Jump: //Console.Write("blah blah");
             if(possible){
                 Console.WriteLine("Located possible word! ");
                 Possibilities.Add(str);
@@ -111,12 +112,13 @@ class WordleWordProcessor{
         string output = "default_value";
         Console.WriteLine("Possibilities size is " + Possibilities.Count);
         foreach(string s in Possibilities){
+            Console.WriteLine(s + ": " + WordleValues[s]);
             if(WordleValues[s] > highest){
                 highest = WordleValues[s];
                 output = s;
             }
         }
-        Console.WriteLine("Output is " + output);
+        Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
         return output;
     }
     public static void Main(string[] args){
