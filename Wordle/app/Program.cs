@@ -1,5 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+// hello there
+
 using System;
 using System.IO;
 using System.Collections.Generic;
