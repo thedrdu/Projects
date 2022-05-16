@@ -47,7 +47,7 @@ def generateGuess(guess, tiles):
                 break
         if possible:
             possibilities.append(str)
-    highest = 0
+    highest = 0.0
     output = "default_value"
     for s in possibilities:
         if wordle_values[s] > highest:
