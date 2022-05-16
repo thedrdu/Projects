@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jeffreydu/Desktop/Coding Stuff/Wordle/app/app.csproj": {}
+    "/Users/jeffreydu/Documents/GitHub/Projects/Wordle/app/app.csproj": {}
   },
   "projects": {
-    "/Users/jeffreydu/Desktop/Coding Stuff/Wordle/app/app.csproj": {
+    "/Users/jeffreydu/Documents/GitHub/Projects/Wordle/app/app.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jeffreydu/Desktop/Coding Stuff/Wordle/app/app.csproj",
+        "projectUniqueName": "/Users/jeffreydu/Documents/GitHub/Projects/Wordle/app/app.csproj",
         "projectName": "app",
-        "projectPath": "/Users/jeffreydu/Desktop/Coding Stuff/Wordle/app/app.csproj",
+        "projectPath": "/Users/jeffreydu/Documents/GitHub/Projects/Wordle/app/app.csproj",
         "packagesPath": "/Users/jeffreydu/.nuget/packages/",
-        "outputPath": "/Users/jeffreydu/Desktop/Coding Stuff/Wordle/app/obj/",
+        "outputPath": "/Users/jeffreydu/Documents/GitHub/Projects/Wordle/app/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/jeffreydu/.nuget/NuGet/NuGet.Config"

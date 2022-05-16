@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xMRryOlStgx+H5vMJd7og/R8Oq5PDNEnN9pd/3DWq9LUivQLJANy+65UHoE9eTO4uD/P+VtaNTQT0EPmTJbyUw==",
+  "dgSpecHash": "p1c9Lk5KWBME69de2JxzytBZyjgVHGD/9EadHO/AR88Acm3qok+fdRtfj3JiuyaMN735MZW8T5f1QQ38fqBctw==",
   "success": true,
-  "projectFilePath": "/Users/jeffreydu/Desktop/Coding Stuff/Wordle/app/app.csproj",
+  "projectFilePath": "/Users/jeffreydu/Documents/GitHub/Projects/Wordle/app/app.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

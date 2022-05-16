@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-// hello there
+﻿// Authors: thedrdu, rayros25
 
 using System;
 using System.IO;
@@ -24,45 +22,49 @@ class WordleWordProcessor{
     //Stores all characters with a gray tile.
     static ArrayList GrayLetters = new ArrayList();
     
+    //Resets all structures without exiting program.
+    public static void reset(){
+        WordleValues.Clear();
+        LetterOccurrences.Clear();
+        for(int i = 0; i < GreenLetters.Length; i++){
+                GreenLetters[i] = '\0';
+        }
+        YellowLetters.Clear();
+        GrayLetters.Clear();
+    }
 
     /*  generateGuess()
-    Goal: Given a Dictionary of the previous guess, make the next guess.
     Idea: Try to find words that match criteria we have, then pick the one with the highest strength value.
-    Pass in string tileColors(ex. 01221), 0=gray, 1=yellow, 2=green, then make a guess. Start with 00000
-    Need a way to store index of tiles.
+    Pass in string guess and string tileColors(ex. 01221), 0=gray, 1=yellow, 2=green, then make a guess.
     */
     public static string generateGuess(string guess, string tiles){
         ArrayList Possibilities = new ArrayList();
-        //Checks for green letters and adds to GreenLetters if applicable.
         for(int i = 0; i < guess.Length; i++){
-            Console.WriteLine("tiles[i] is " + tiles[i]);
-            if(tiles[i].Equals('2')){
-                Console.WriteLine("Green Located");
+            //Console.WriteLine("tiles[i] is " + tiles[i]);
+            if(tiles[i].Equals('2')){ //Checks for green letters and adds to GreenLetters if applicable.
+                //Console.WriteLine("Green Located");
                 GreenLetters[i] = guess[i];
             }
-            else if(tiles[i].Equals('1')){ //If yellow at index i
-                Console.WriteLine("Yellow Located");
-                if(!YellowLetters.ContainsKey(guess[i])){ //If char is not already in list, add to the list with the index
+            else if(tiles[i].Equals('1')){ //Checks for yellow letters at index i and adds to YellowLetters with said index.
+                //Console.WriteLine("Yellow Located");
+                if(!YellowLetters.ContainsKey(guess[i])){ //If char is not already in list, add to the list with the index.
                     YellowLetters.Add(guess[i], new ArrayList{i});
                 }
-                else if(!YellowLetters[guess[i]].Contains(i)){ //char is already in the list
-                    YellowLetters[guess[i]].Add(i); //If index is not already listed, add the new index
+                else if(!YellowLetters[guess[i]].Contains(i)){ //If char is already in the list, add to the ArrayList of indexes.
+                    YellowLetters[guess[i]].Add(i);
                 }
             }
-            else{
-                Console.WriteLine("Gray Located");
+            else{ //If the tile is not green or yellow, then we add to GrayLetters.
+                //Console.WriteLine("Gray Located");
                 GrayLetters.Add(guess[i]);
             }
         }
         //Now we have an updated GrayLetters, YellowLetters(stores index) and GreenLetters(stores index). We can now form our next guess.
-        //Need to find words that contain all yellows, and all greens at the right spots, and no grays.
+        //Need to find words that contain all yellows not at prior spots, and all greens at known spots, and no grays.
         bool possible = true;
-        bool containsYellow = false;
-
         foreach(string str in WordleValues.Keys){
             for(int i = 0; i < str.Length; i++){
                 possible = true;
-                containsYellow = false;
                 foreach(char c in YellowLetters.Keys){ //If str does not contain a known yellow letter at all
                     if(!str.Contains(c)){
                         //Console.Write("str does not contain a known yellow.");
@@ -88,59 +90,59 @@ class WordleWordProcessor{
                     goto Jump;
                 }
             }
-            Jump: //Console.Write("blah blah");
+            Jump: //Serves as a break of sorts.
             if(possible){
-                Console.WriteLine("Located possible word! ");
+                //Console.WriteLine("Located possible word! ");
                 Possibilities.Add(str);
             }
         }
 
-        Console.WriteLine();
-        Console.Write("GreenLetters contains: [");
-        foreach(char c in GreenLetters){
-            Console.Write(c + " ");
-        }
-        Console.WriteLine("]");
-        Console.Write("YellowLetters contains: [");
-        foreach(KeyValuePair<char,ArrayList> kv in YellowLetters){ 
-            Console.Write(kv.Key + ": ");
-            foreach(int i in kv.Value){
-                Console.Write(i + " ");
-            }
-        }
-        Console.WriteLine("]");
+        //TESTING: Print contents of all structures storing tile colors
+        // Console.WriteLine();
+        // Console.Write("GreenLetters contains: [");
+        // foreach(char c in GreenLetters){
+        //     Console.Write(c + " ");
+        // }
+        // Console.WriteLine("]");
+        // Console.Write("YellowLetters contains: [");
+        // foreach(KeyValuePair<char,ArrayList> kv in YellowLetters){ 
+        //     Console.Write(kv.Key + ": ");
+        //     foreach(int i in kv.Value){
+        //         Console.Write(i + " ");
+        //     }
+        // }
+        // Console.WriteLine("]");
 
         double highest = 0;
         string output = "default_value";
-        Console.WriteLine("Possibilities size is " + Possibilities.Count);
+        //Console.WriteLine("Possibilities size is " + Possibilities.Count);
         foreach(string s in Possibilities){
-            Console.WriteLine(s + ": " + WordleValues[s]);
+            //Console.WriteLine(s + ": " + WordleValues[s]);
             if(WordleValues[s] > highest){
                 highest = WordleValues[s];
                 output = s;
             }
         }
-        Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
+        //Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
         return output;
     }
     public static void Main(string[] args){
+        Start:
         bool solved = false;
+        //Add each letter with initial frequency 0
         for(int i = 97; i <= 122; i++){
             LetterOccurrences.Add(Convert.ToChar(i), 0);
         }
         try{
-            // Create an instance of StreamReader to read from a file.
             using (StreamReader sr = new StreamReader("WordList.txt"))
             {
-                string line;
+                string? line;
                 // Adds all words into a Dictionary of <Word,Value> pairing. Sets initial value to -1.
-                // TODO: check for duplicate words
                 while((line = sr.ReadLine()) != null)
                 {
                     if(!(WordleValues.ContainsKey(line))){
                         WordleValues.Add(line, -1);
                     }
-                    //Console.WriteLine(line);
                 }
             }
 
@@ -165,6 +167,7 @@ class WordleWordProcessor{
             //Idea: For each word, add its 5 letters' occurrences(OccurrenceSum) and then divide by totalLetters to get a strength value.
             //Problem: Duplicate letters in a word.
             //Solution: "visited" ArrayList to hold all checked letters so far.
+            
             double OccurrenceSum = 0;
             ArrayList visited = new ArrayList();
             foreach(string str in WordleValues.Keys){
@@ -180,25 +183,44 @@ class WordleWordProcessor{
             }
 
             //TESTING: Print in ascending strength value order.
-            foreach (KeyValuePair<string,double> kv in WordleValues.OrderBy(key=> key.Value)){ 
-                Console.WriteLine(kv.Key + ": " + kv.Value);
-            }
+            // foreach (KeyValuePair<string,double> kv in WordleValues.OrderBy(key=> key.Value)){ 
+            //     Console.WriteLine(kv.Key + ": " + kv.Value);
+            // }
+
+            Console.WriteLine("Ready!");
+
+            //TESTING: audio vs penis
+            // Console.Write("audio: " + WordleValues["audio"] + " letters: ");
+            // foreach(char c in "audio"){
+            //     Console.Write(c + ": " + LetterOccurrences[c] + "  ");
+            // }
+            // Console.WriteLine();
+            // Console.Write("penis: " + WordleValues["penis"] + " letters: ");
+            // foreach(char c in "penis"){
+            //     Console.Write(c + ": " + LetterOccurrences[c] + "  ");
+            // }
 
             string guess;
             string tiles;
-            Console.WriteLine("hello!");
+            //Console.WriteLine("hello!");
             while(!solved){
-                Console.WriteLine("Input guess and tiles: ");
-                string line = Console.ReadLine();
+                Console.WriteLine("Enter input or command: ");
+                string? line = Console.ReadLine(); //Takes in input as one string
+                if(line == "exit"){ //Exit program
+                    solved = true;
+                    Console.WriteLine("Thanks for using me!");
+                    break;
+                }
+                else if(line == "reset"){ //Reset all structures without exiting program
+                    reset();
+                    goto Start;
+                }
+                #pragma warning disable CS8602 //Situation where input is not valid will not cause any issues.
                 var data = line.Split(' ');
                 guess = data[0]; //first input
                 tiles = data[1]; //second input
-                if(tiles == "22222"){
-                    solved = true;
-                    Console.WriteLine("Solved! The word is: " + guess);
-                }
-                Console.WriteLine("guess is " + guess + ", tiles is " + tiles);
-                Console.WriteLine(generateGuess(guess, tiles));
+                //Console.WriteLine("guess is " + guess + ", tiles is " + tiles);
+                Console.WriteLine("Try guessing " + generateGuess(guess, tiles) + ".");
             }
         }
         catch (Exception e){
