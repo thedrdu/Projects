@@ -8,8 +8,8 @@ ex: "tears 12210"
 
 The algorithm will give you the next best word to guess.
 
-##Other commands:
-exit - exits program
-reset - resets all constructors without exiting program.
+## Other commands:
+exit - exits program <br />
+reset - resets all constructors without exiting program. <br />
 
 NOTE: Not *fully* optimal. There is no placement analysis.
