@@ -11,10 +11,8 @@ class WordleWordProcessor {
     static int totalLetters;
     //Stores word and corresponding "strength value"(to be computed later).
     static Dictionary<string, double> WordleValues = new Dictionary<string, double>();
-
     //Stores occurrences of each letter.
     static Dictionary<char, int> LetterOccurrences = new Dictionary<char, int>();
-
     //Stores characters with a green tile at the correct final index.
     static char[] GreenLetters = new char[5];
     //Stores character and an ArrayList of indexes(int).
@@ -61,38 +59,38 @@ class WordleWordProcessor {
         }
         //Now we have an updated GrayLetters, YellowLetters(stores index) and GreenLetters(stores index). We can now form our next guess.
         //Need to find words that contain all yellows not at prior spots, and all greens at known spots, and no grays.
-        bool possible = true;
+        bool isPossible = true;
         foreach (string str in WordleValues.Keys) {
             for (int i = 0; i < str.Length; i++) {
-                possible = true;
+                isPossible = true;
                 foreach (char c in YellowLetters.Keys) { //If str does not contain a known yellow letter at all
                     if (!str.Contains(c)) {
                         //Console.Write("str does not contain a known yellow.");
-                        possible = false;
+                        isPossible = false;
                         goto Jump;
                     }
                 }
                 if (YellowLetters.ContainsKey(str[i])) {
                     if ((YellowLetters[str[i]].Contains(i))) { //If str contains a known yellow letter, but at a known yellow index
                         //Console.Write("str contains a known yellow at the wrong index.");
-                        possible = false;
+                        isPossible = false;
                         goto Jump;
                     }
                 }
                 if (GrayLetters.Contains(str[i])) { //If str contains a known gray letter
                     //Console.Write("str contains a known gray letter.");
-                    possible = false;
+                    isPossible = false;
                     goto Jump;
                 }
                 if (GreenLetters[i] != 0 && str[i] != GreenLetters[i]) { //If green letter exists at index i and str doesn't match it
                     //Console.Write("str is missing a green letter at index " + i + ".");
-                    possible = false;
+                    isPossible = false;
                     goto Jump;
                 }
             }
             Jump: //Serves as a break of sorts.
-            if (possible) {
-                //Console.WriteLine("Located possible word! ");
+            if (isPossible) {
+                //Console.WriteLine("Located isPossible word! ");
                 Possibilities.Add(str);
             }
         }
@@ -126,6 +124,7 @@ class WordleWordProcessor {
         //Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
         return output;
     }
+
     public static void Main (string[] args) {
         Start:
         bool solved = false;
