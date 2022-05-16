@@ -1,7 +1,15 @@
 # a python transcribed version of the other one
 
-# ord: str/char --> int
+# ord: key/char --> int
 # chr: int --> char
+
+#0=gray, 1=yellow, 2=green
+
+# boobs 00000
+# raile 21001
+# redan 22010
+# recta 22111
+# react
 
 import time
 
@@ -11,7 +19,7 @@ wordlist = []
 wordle_values = dict()
 letter_occurs = dict()
 
-green_letters = "     "
+green_letters = [' ', ' ', ' ', ' ', ' ']
 yellow_letters = dict()
 gray_letters = []
 
@@ -33,18 +41,38 @@ def generateGuess(guess, tiles):
         else:
             gray_letters.append(guess[i])
     possible = True
-    for str in wordle_values.keys():
-        for i, c in enumerate(str):
-            possible = True
-            for c in yellow_letters.keys():
-                if not c in str:
-                    possible = False
-                    #goto Jump
-            if str[i] in yellow_letters.keys():
-                
-    
-    
-                
+    for key in wordle_values.keys():
+        possible = True
+        for c in yellow_letters.keys(): #If key does not contain a known yellow letter at all
+            if not c in key:
+                possible = False
+                #goto Jump
+            if key[i] in yellow_letters.keys():
+                break
+        for i, c in enumerate(key):
+            if key[i] in yellow_letters.keys(): #If key contains a known yellow letter, but at a known yellow index
+                possible = False
+                #goto Jump
+            if key[i] in gray_letters:
+                possible = False
+                break
+            if not green_letters[i] == ' ' and not key[i] == green_letters[i]: #If green letter exists at index i and key doesn't match it
+                possible = False
+                break
+        if possible:
+            possibilities.append(key)
+    highest = 0
+    output = "PLACEHOLDER"
+    print(len(possibilities))
+    for s in possibilities:
+        if wordle_values[s] > highest:
+            print(s, wordle_values[s])
+            highest = wordle_values[s]
+            output = s
+    return output
+            
+            
+
 def main():
     solved = False
     for i in range(97, 123):
