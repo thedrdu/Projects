@@ -39,6 +39,7 @@ class WordleWordProcessor{
     */
     public static string generateGuess(string guess, string tiles){
         ArrayList Possibilities = new ArrayList();
+        long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         for(int i = 0; i < guess.Length; i++){
             //Console.WriteLine("tiles[i] is " + tiles[i]);
             if(tiles[i].Equals('2')){ //Checks for green letters and adds to GreenLetters if applicable.
@@ -123,6 +124,8 @@ class WordleWordProcessor{
                 output = s;
             }
         }
+        long endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        Console.Write("(" + (endTime - startTime) + "ms) ");
         //Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
         return output;
     }
@@ -134,6 +137,7 @@ class WordleWordProcessor{
             LetterOccurrences.Add(Convert.ToChar(i), 0);
         }
         try{
+            long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             using (StreamReader sr = new StreamReader("WordList.txt"))
             {
                 string? line;
@@ -145,6 +149,8 @@ class WordleWordProcessor{
                     }
                 }
             }
+            long endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            Console.WriteLine("WordList processed in: " + (endTime - startTime) + "ms");
 
             //Set totalLetters to 5 * # of words
             totalLetters = WordleValues.Count*5;
@@ -204,7 +210,7 @@ class WordleWordProcessor{
             string tiles;
             //Console.WriteLine("hello!");
             while(!solved){
-                Console.WriteLine("Enter input or command: ");
+                Console.Write("Enter input or command: ");
                 string? line = Console.ReadLine(); //Takes in input as one string
                 if(line == "exit"){ //Exit program
                     solved = true;
