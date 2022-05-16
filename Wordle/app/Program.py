@@ -3,6 +3,9 @@
 # ord: str/char --> int
 # chr: int --> char
 
+import time
+
+
 wordlist = []
 wordle_values = dict()
 letter_occurs = dict()
@@ -14,7 +17,7 @@ gray_letters = []
 def reset():
     wordle_values.clear()
     letter_occurs.clear()
-    green_letters = ""
+    green_letters = "     "
     yellow_letters.clear()
     gray_letters.clear()
 
@@ -28,17 +31,25 @@ def generateGuess(guess, tiles):
                 yellow_letters[guess[i]] = []
             
             
-
 def main():
     solved = False
     for i in range(97, 123):
         letter_occurs[chr(i)] = 0
 
     # try loop?
+
+    starttime = time.time()
     with open("WordList2.txt", "r") as file:
         wordlist = file.read().splitlines()
 
     for word in wordlist:
+        if not word in worlde_values.keys
+        # car.update({"color": "White"})
+        # if(!(WordleValues.ContainsKey(line))){
+        #                 WordleValues.Add(line, -1);
+
+
+        #             }
         for c in word:
             letter_occurs[c] += 1
             
@@ -66,7 +77,7 @@ def main():
         data = inp.split(' ')
         guess = generateGuess(data[0], data[1])
         print("Try guessing", guess)
-
+    # try loop ends here
 
 if __name__ == "__main__":
     main()
