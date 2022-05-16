@@ -29,6 +29,19 @@ def generateGuess(guess, tiles):
         elif tiles[i] == '1':
             if not guess[i] in yellow_letters.keys():
                 yellow_letters[guess[i]] = []
+        else:
+            gray_letters.append(guess[i])
+    possible = True
+    for str in wordle_values.keys():
+        for i, c in enumerate(str):
+            possible = True
+            for c in yellow_letters.keys():
+                if not c in str:
+                    possible = False
+                    #goto Jump
+            if str[i] in yellow_letters.keys():
+                
+    
             
             
 def main():

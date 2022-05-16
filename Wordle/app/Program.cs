@@ -64,15 +64,15 @@ class WordleWordProcessor{
         //Need to find words that contain all yellows not at prior spots, and all greens at known spots, and no grays.
         bool possible = true;
         foreach(string str in WordleValues.Keys){
-            for(int i = 0; i < str.Length; i++){
-                possible = true;
-                foreach(char c in YellowLetters.Keys){ //If str does not contain a known yellow letter at all
+            possible = true;
+            foreach(char c in YellowLetters.Keys){ //If str does not contain a known yellow letter at all
                     if(!str.Contains(c)){
                         //Console.Write("str does not contain a known yellow.");
                         possible = false;
                         goto Jump;
                     }
                 }
+            for(int i = 0; i < str.Length; i++){
                 if(YellowLetters.ContainsKey(str[i])){
                     if((YellowLetters[str[i]].Contains(i))){ //If str contains a known yellow letter, but at a known yellow index
                         //Console.Write("str contains a known yellow at the wrong index.");
