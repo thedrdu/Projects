@@ -7,9 +7,27 @@ wordlist = []
 wordle_values = dict()
 letter_occurs = dict()
 
-green_letters = []
+green_letters = "     "
 yellow_letters = dict()
 gray_letters = []
+
+def reset():
+    wordle_values.clear()
+    letter_occurs.clear()
+    green_letters = ""
+    yellow_letters.clear()
+    gray_letters.clear()
+
+def generateGuess(guess, tiles):
+    possibilities = []
+    for i, c in enumerate(guess):
+        if tiles[i] == '2':
+            green_letters[i] = guess[i]
+        elif tiles[i] == '1':
+            if not guess[i] in yellow_letters.keys():
+                yellow_letters[guess[i]] = []
+            
+            
 
 def main():
     solved = False
