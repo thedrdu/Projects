@@ -5,6 +5,7 @@
 
 import time
 
+filename = "WordList.txt"
 
 wordlist = []
 wordle_values = dict()
@@ -42,8 +43,8 @@ def generateGuess(guess, tiles):
             if str[i] in yellow_letters.keys():
                 
     
-            
-            
+    
+                
 def main():
     solved = False
     for i in range(97, 123):
@@ -52,19 +53,17 @@ def main():
     # try loop?
 
     starttime = time.time()
-    with open("WordList2.txt", "r") as file:
+    with open(filename, "r") as file:
         wordlist = file.read().splitlines()
 
     for word in wordlist:
-        if not word in worlde_values.keys
-        # car.update({"color": "White"})
-        # if(!(WordleValues.ContainsKey(line))){
-        #                 WordleValues.Add(line, -1);
+        if not word in wordle_values.keys():
+            wordle_values.update({word : -1})
+            for c in word:
+                letter_occurs[c] += 1
 
-
-        #             }
-        for c in word:
-            letter_occurs[c] += 1
+    endtime = time.time()
+    print("WordList processed in", endtime - starttime, "sec")
             
     visited_letters = []
     occurence_sum = 0.0
@@ -83,9 +82,13 @@ def main():
     while not solved:
         inp = input("Enter input or command: ")
         if inp == "exit":
-            print("deez nuts lmao")
+            print("Thanks for using me!")
+            solved = True
+            break
         elif inp == "reset":
+            reset()
             print("Whoa, I didn't implement that yet")
+            # goto start?
             
         data = inp.split(' ')
         guess = generateGuess(data[0], data[1])
