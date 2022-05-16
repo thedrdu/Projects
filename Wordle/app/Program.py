@@ -37,18 +37,19 @@ def generateGuess(guess, tiles):
             green_letters[i] = guess[i]
         elif tiles[i] == '1':
             if not guess[i] in yellow_letters.keys():
-                yellow_letters[guess[i]] = []
+                yellow_letters[guess[i]] = [i]
+            # NEED TO ADD AN ELSE STATEMENT TO APPEND TO KEY'S ARRAY VALUE OF INDEXES IF KEY ALREADY EXISTS IN YELLOW_LETTERS
         else:
             gray_letters.append(guess[i])
     possible = True
+    #TODO: fix issue where conditions for possible are never met
     for key in wordle_values.keys():
         possible = True
         for c in yellow_letters.keys(): #If key does not contain a known yellow letter at all
             if not c in key:
                 possible = False
-                #goto Jump
-            if key[i] in yellow_letters.keys():
                 break
+                #goto Jump
         for i, c in enumerate(key):
             if key[i] in yellow_letters.keys(): #If key contains a known yellow letter, but at a known yellow index
                 possible = False
@@ -61,6 +62,10 @@ def generateGuess(guess, tiles):
                 break
         if possible:
             possibilities.append(key)
+    #Testing
+    print(green_letters)
+    print(yellow_letters)
+    print(gray_letters)
     highest = 0
     output = "PLACEHOLDER"
     print(len(possibilities))
@@ -91,7 +96,7 @@ def main():
                 letter_occurs[c] += 1
 
     endtime = time.time()
-    print("WordList processed in", endtime - starttime, "sec")
+    print("WordList processed in", endtime - starttime, "secs")
             
     visited_letters = []
     occurence_sum = 0.0
@@ -115,9 +120,7 @@ def main():
             break
         elif inp == "reset":
             reset()
-            print("Whoa, I didn't implement that yet")
-            # goto start?
-            
+            #figure out how to go to beginning of main
         data = inp.split(' ')
         guess = generateGuess(data[0], data[1])
         print("Try guessing", guess)
