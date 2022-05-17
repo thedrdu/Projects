@@ -24,13 +24,62 @@ class WordleWordProcessor{
     
     //Resets all structures without exiting program.
     public static void reset(){
-        WordleValues.Clear();
-        LetterOccurrences.Clear();
+        //WordleValues.Clear();
+        //LetterOccurrences.Clear();
         for(int i = 0; i < GreenLetters.Length; i++){
                 GreenLetters[i] = '\0';
         }
         YellowLetters.Clear();
         GrayLetters.Clear();
+    }
+
+    //Gets the strongest starter word.
+    public static string getBestStarter(){
+        string output = "";
+        double highest = 0.0;
+        foreach(string str in WordleValues.Keys){
+            if(WordleValues[str] > highest){
+                highest = WordleValues[str];
+                output = str;
+            }
+        }
+        return output;
+    }
+
+    public static string getTiles(string guess, string answer){
+        string output = "";
+        for(int i = 0; i < guess.Length; i++){
+            if(answer.Contains(guess[i]) && answer[i] != guess[i]){ //guess[i] is yellow
+                output += 1;
+            }
+            else if(answer[i] == guess[i]){ //guess[i] is green
+                output += 2;
+            }
+            else{
+                output += 0; //guess[i] is gray
+            }
+        }
+        return output;
+    }
+
+    public static List<int> distributionTest(){
+        List<int> guessCountList = new List<int>();
+        int guessCount = 1;
+        string answer = "";
+        string currentGuess = "";
+        foreach(string str in WordleValues.Keys){
+            guessCount = 1;
+            answer = str;
+            currentGuess = generateGuess(getBestStarter(), getTiles(getBestStarter(), answer)); //Generate initial guess with the best word and its tiles.
+            while(!currentGuess.Equals(answer)){
+                currentGuess = generateGuess(currentGuess, getTiles(currentGuess, answer));
+                guessCount++;
+            }
+            //Console.WriteLine("adding " + guessCount + " to guessCountList.");
+            guessCountList.Add(guessCount);
+            reset(); //Reset to test finding the next word.
+        }
+        return guessCountList;
     }
 
     /*  generateGuess()
@@ -39,7 +88,7 @@ class WordleWordProcessor{
     */
     public static string generateGuess(string guess, string tiles){
         ArrayList Possibilities = new ArrayList();
-        long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        //long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         for(int i = 0; i < guess.Length; i++){
             //Console.WriteLine("tiles[i] is " + tiles[i]);
             if(tiles[i].Equals('2')){ //Checks for green letters and adds to GreenLetters if applicable.
@@ -124,8 +173,8 @@ class WordleWordProcessor{
                 output = s;
             }
         }
-        long endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        Console.Write("(" + (endTime - startTime) + "ms) ");
+        //long endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        //Console.Write("(" + (endTime - startTime) + "ms) ");
         //Console.WriteLine("Output is " + output + " with strength value of " + WordleValues[output]);
         return output;
     }
@@ -215,6 +264,13 @@ class WordleWordProcessor{
                 if(line == "exit"){ //Exit program
                     solved = true;
                     Console.WriteLine("Thanks for using me!");
+                    break;
+                }
+                else if(line == "test"){
+                    Console.WriteLine("Calculating. . .");
+                    List<int> tempList = distributionTest();
+                    Console.WriteLine("Avg guesses per word: " + ((double)tempList.Sum()/(double)tempList.Count));
+                    Console.Write("Exiting process. . .");
                     break;
                 }
                 else if(line == "reset"){ //Reset all structures without exiting program
