@@ -1,31 +1,34 @@
-# a python transcribed version of the other one
-
-# ord: key/char --> int
-# chr: int --> char
-
-#0=gray, 1=yellow, 2=green
-
-# boobs 00000
-# raile 21001
-# redan 22010
-# recta 22111
-# react
-
-# tears 12210
-# react
+# Python program designed to help user solve Wordle
+#
+# Usage: User provides their guess and the feedback they got from it (the
+# green, yellow, and grey squares). They input this into the script, and they 
+# are provided with a guess based on the data provided.
+#
+# Written by: thedrdu and rayros25
+#
+# Last updated 2022-05-16
 
 import time
 
+# Name of file where words are stored
 filename = "WordList.txt"
 
+# Stores words from word list
 wordlist = []
+# Stores word and corresponding "strength value" (to be computed later)
 wordle_values = dict()
+# Stores occurrences of each letter
 letter_occurs = dict()
 
+# Stores characters with a green tile at the correct final index
 green_letters = [' ', ' ', ' ', ' ', ' ']
+# Stores character and an ArrayList of indexes(int)
 yellow_letters = dict()
+# Stores all characters with a gray tile
 gray_letters = []
 
+# reset
+# used to reset all structures without exiting the program
 def reset():
     wordle_values.clear()
     letter_occurs.clear()
@@ -33,6 +36,10 @@ def reset():
     yellow_letters.clear()
     gray_letters.clear()
 
+# generateGuess
+# Idea: Try to find words that match criteria we have, then pick the one with 
+# the highest strength value. Pass in string guess and string tileColors 
+# (ex. 01221), 0=gray, 1=yellow, 2=green, then make a guess.
 def generateGuess(guess, tiles):
     possibilities = []
     for i, c in enumerate(guess):
@@ -41,8 +48,6 @@ def generateGuess(guess, tiles):
         elif tiles[i] == '1':
             if not guess[i] in yellow_letters.keys():
                 yellow_letters[guess[i]] = [i]
-            # NEED TO ADD AN ELSE STATEMENT TO APPEND TO KEY'S ARRAY VALUE OF 
-            # INDEXES IF KEY ALREADY EXISTS IN YELLOW_LETTERS
             else:
                 yellow_letters[guess[i]].append(i)
         else:
@@ -72,29 +77,29 @@ def generateGuess(guess, tiles):
                 break
         if possible:
             possibilities.append(key)
-    #Testing
-    print("GREEN", green_letters)
-    print("YELLOW", yellow_letters)
-    print("GRAY", gray_letters)
+    # Testing prints
+    # print("GREEN", green_letters)
+    # print("YELLOW", yellow_letters)
+    # print("GRAY", gray_letters)
     highest = 0
     output = "PLACEHOLDER"
-    print("length of pos", len(possibilities))
+    # print("length of pos", len(possibilities))
     for s in possibilities:
         if wordle_values[s] > highest:
             print(s, wordle_values[s])
             highest = wordle_values[s]
             output = s
     return output
-            
-            
 
+
+# main
+# handles user input
 def main():
     solved = False
     for i in range(97, 123):
         letter_occurs[chr(i)] = 0
 
-    # try loop?
-
+    # try loop starts here
     starttime = time.time()
     with open(filename, "r") as file:
         wordlist = file.read().splitlines()
@@ -130,11 +135,13 @@ def main():
             break
         elif inp == "reset":
             reset()
-            #figure out how to go to beginning of main
+            # TODO: figure out how to go to beginning of main
         data = inp.split(' ')
         guess = generateGuess(data[0], data[1])
         print("Try guessing", guess)
     # try loop ends here
 
+
+# guard clause
 if __name__ == "__main__":
     main()
