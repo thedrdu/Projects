@@ -6,8 +6,10 @@
 #include <iostream>
 #include <fstream>
 
-int grid[9][9];
 using namespace std;
+int grid[9][9];
+
+bool is_valid(int row, int col);
 
 int main() {
     cout << "Enter filename: ";
@@ -29,4 +31,7 @@ int main() {
     // ok, we have a 2D grid. now what?
     return 0;
 }
-    
+
+bool is_valid(int row, int col) {
+    // function goes here
+}
