@@ -11,6 +11,9 @@
 # recta 22111
 # react
 
+# tears 12210
+# react
+
 import time
 
 filename = "WordList.txt"
@@ -38,37 +41,44 @@ def generateGuess(guess, tiles):
         elif tiles[i] == '1':
             if not guess[i] in yellow_letters.keys():
                 yellow_letters[guess[i]] = [i]
-            # NEED TO ADD AN ELSE STATEMENT TO APPEND TO KEY'S ARRAY VALUE OF INDEXES IF KEY ALREADY EXISTS IN YELLOW_LETTERS
+            # NEED TO ADD AN ELSE STATEMENT TO APPEND TO KEY'S ARRAY VALUE OF 
+            # INDEXES IF KEY ALREADY EXISTS IN YELLOW_LETTERS
+            else:
+                yellow_letters[guess[i]].append(i)
         else:
             gray_letters.append(guess[i])
     possible = True
-    #TODO: fix issue where conditions for possible are never met
+    # TODO: fix issue where conditions for possible are never met
     for key in wordle_values.keys():
         possible = True
-        for c in yellow_letters.keys(): #If key does not contain a known yellow letter at all
+        for c in yellow_letters.keys(): 
+            # If key does not contain a known yellow letter at all
             if not c in key:
                 possible = False
                 break
-                #goto Jump
         for i, c in enumerate(key):
-            if key[i] in yellow_letters.keys(): #If key contains a known yellow letter, but at a known yellow index
-                possible = False
-                #goto Jump
+            if key[i] in yellow_letters.keys(): 
+                # If key contains a known yellow letter, 
+                # but at a known yellow index
+                if i in yellow_letters[key[i]]:
+                    possible = False
+                    break
             if key[i] in gray_letters:
                 possible = False
                 break
-            if not green_letters[i] == ' ' and not key[i] == green_letters[i]: #If green letter exists at index i and key doesn't match it
+            if not green_letters[i] == ' ' and not key[i] == green_letters[i]: 
+                #If green letter exists at index i and key doesn't match it
                 possible = False
                 break
         if possible:
             possibilities.append(key)
     #Testing
-    print(green_letters)
-    print(yellow_letters)
-    print(gray_letters)
+    print("GREEN", green_letters)
+    print("YELLOW", yellow_letters)
+    print("GRAY", gray_letters)
     highest = 0
     output = "PLACEHOLDER"
-    print(len(possibilities))
+    print("length of pos", len(possibilities))
     for s in possibilities:
         if wordle_values[s] > highest:
             print(s, wordle_values[s])
