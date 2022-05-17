@@ -1,5 +1,7 @@
 # Python program designed to help user solve Wordle
 #
+# Note: Outdated and incomplete. May not work.
+#
 # Usage: User provides their guess and the feedback they got from it (the
 # green, yellow, and grey squares). They input this into the script, and they 
 # are provided with a guess based on the data provided.
