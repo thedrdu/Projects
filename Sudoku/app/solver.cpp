@@ -7,9 +7,16 @@
 #include <fstream>
 
 using namespace std;
+
 int grid[9][9];
+int answers[9][9];
+int squares_filled = 0;
 
 bool is_valid(int row, int col);
+void next(int &i, int &j);
+void prev(int &i, int &j);
+
+void solve(int r, int c);
 
 int main() {
     cout << "Enter filename: ";
@@ -21,9 +28,12 @@ int main() {
         cerr << "ERROR: not valid file\n";
         exit (EXIT_FAILURE);
     }
+
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             infile >> grid[i][j];
+            answers[i][j] = grid[i][j];
+            if (grid[i][j] != 0) { squares_filled++; }
         }
     }
     infile.close();
@@ -33,5 +43,63 @@ int main() {
 }
 
 bool is_valid(int row, int col) {
-    // function goes here
+    for (int i = 0; i < 9; i++) {
+        if (i != row and grid[i][col] == grid[row][col]) {
+            return false;
+        }
+    }
+
+    for (int i = 0; i < 9; i++) {
+        if (i != col and grid[row][i] == grid[row][col]) {
+            return false;
+        }
+    }
+
+    for (int i = row / 3; i < 3; i++) {
+        for (int j = col / 3; j < 3; j++) {
+            if (i != row and j != col and grid[i][j] == grid[row][col]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void next(int &i, int &j) {
+    do {
+        i++;
+        if (i >=9) {
+            i = 0;
+            j++;
+        }
+    } while (grid[i][j] == 0);
+}
+
+void prev(int &i, int &j) {
+    do {
+        i--;
+        if (i < 0) {
+            i = 8;
+            j--;
+        }
+    } while (grid[i][j] == 0);
+}
+
+void solve(int r, int c) {
+    answers[r][c]++;
+    if (is_valid(r, c)) {
+        squares_filled++;
+        next(r, c);
+        solve(r, c);
+    }
+    else {
+        solve(r, c);
+        if (answers[r][c] >= 9) {
+            return;
+        }
+        answers[r][c] = 0;
+        prev(r, c);
+        solve(r, c);
+    }
 }
