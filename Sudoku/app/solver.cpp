@@ -1,6 +1,8 @@
 /* sudoku solver
- * This program solves a sudoku puzzle
+ * This program takes in a starting position for Sudoku and finds a solution via DFS.
  * Written by thedrdu and rayros2025, 2022-05-17
+ * 
+ * TODO: Check if input is valid.
  */
 
 #include <iostream>
@@ -17,6 +19,11 @@ void next(int &i, int &j);
 void prev(int &i, int &j);
 
 void solve(int r, int c);
+
+// these might be unnecessary
+// bool check_rows(); //placeholder, not sure what params will be yet.
+// bool check_cols(); //placeholder, not sure what params will be yet.
+// bool check_boxes(); //placeholder, not sure what params will be yet.
 
 int main() {
     cout << "Enter filename: ";
@@ -87,19 +94,22 @@ void prev(int &i, int &j) {
 }
 
 void solve(int r, int c) {
-    answers[r][c]++;
-    if (is_valid(r, c)) {
-        squares_filled++;
-        next(r, c);
-        solve(r, c);
-    }
-    else {
-        solve(r, c);
-        if (answers[r][c] >= 9) {
-            return;
+    if (squares_filled != 81) {
+        answers[r][c]++;
+        if (is_valid(r, c)) {
+            squares_filled++;
+            next(r, c);
+            solve(r, c);
         }
-        answers[r][c] = 0;
-        prev(r, c);
-        solve(r, c);
+        else {
+            solve(r, c);
+            if (answers[r][c] >= 9) {
+                return;
+            }
+            answers[r][c] = 0;
+            squares_filled--;
+            prev(r, c);
+            solve(r, c);
+        }
     }
 }
