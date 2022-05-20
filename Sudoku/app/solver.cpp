@@ -46,6 +46,13 @@ int main() {
     infile.close();
 
     // ok, we have a 2D grid. now what?
+    solve(0, 0);
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            cout << answers[i][j];
+        }
+        cout << endl;
+    }
     return 0;
 }
 
@@ -80,7 +87,7 @@ void next(int &i, int &j) {
             i = 0;
             j++;
         }
-    } while (grid[i][j] == 0);
+    } while (grid[i][j] != 0);
 }
 
 void prev(int &i, int &j) {
@@ -90,12 +97,16 @@ void prev(int &i, int &j) {
             i = 8;
             j--;
         }
-    } while (grid[i][j] == 0);
+    } while (grid[i][j] != 0);
 }
 
 void solve(int r, int c) {
     if (squares_filled != 81) {
         answers[r][c]++;
+        if (answers[r][c] < 10) {
+            cout << "trying " << answers[r][c] << " at row " << r 
+                 << " col " << c << '\n'; 
+        }
         if (is_valid(r, c)) {
             squares_filled++;
             next(r, c);
