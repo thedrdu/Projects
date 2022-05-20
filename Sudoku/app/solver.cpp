@@ -65,27 +65,27 @@ int main(int argc, char *argv[]) {
         cout << endl;
     }
     return 0;
-}
+} 
 
 bool is_valid(int row, int col) {
-    cout << "row check\n";
+    // cout << "row check\n";
     for (int i = 0; i < 9; i++) {
-        if (i != row and grid[i][col] == grid[row][col]) {
+        if (i != row and grid[row][col] != 0 and grid[i][col] == grid[row][col]) {
             return false;
         }
     }
 
-    cout << "col check\n";
+    // cout << "col check\n";
     for (int i = 0; i < 9; i++) {
-        if (i != col and grid[row][i] == grid[row][col]) {
+        if (i != col and grid[row][col] != 0 and grid[row][i] == grid[row][col]) {
             return false;
         }
     }
 
-    cout << "box check\n";
+    // cout << "box check\n";
     for (int i = row / 3; i < 3; i++) {
         for (int j = col / 3; j < 3; j++) {
-            if (i != row and j != col and grid[i][j] == grid[row][col]) {
+            if (i != row and j != col and grid[row][col] != 0 and grid[i][j] == grid[row][col]) {
                 return false;
             }
         }
