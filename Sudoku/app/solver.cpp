@@ -15,8 +15,8 @@ int answers[9][9];
 int squares_filled = 0;
 
 bool is_valid(int row, int col);
-void next(int &row, int &col);
-void prev(int &row, int &col);
+void next(int &i, int &j);
+void prev(int &i, int &j);
 
 void solve(int r, int c);
 
@@ -45,8 +45,8 @@ int main() {
     }
     infile.close();
 
-    // TODO: automatically find first open squares
-    solve(0, 2);
+    // ok, we have a 2D grid. now what?
+    solve(0, 0);
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             cout << answers[i][j];
@@ -80,40 +80,40 @@ bool is_valid(int row, int col) {
     return true;
 }
 
-void next(int &row, int &col) {
+void next(int &i, int &j) {
     do {
-        col++;
-        if (col >=9) {
-            col = 0;
-            row++;
+        i++;
+        if (i >=9) {
+            i = 0;
+            j++;
         }
-    } while (grid[row][col] != 0);
+    } while (grid[i][j] != 0);
 }
 
-void prev(int &row, int &col) {
+void prev(int &i, int &j) {
     do {
-        col--;
-        if (col < 0) {
-            col = 8;
-            row--;
+        i--;
+        if (i < 0) {
+            i = 8;
+            j--;
         }
-    } while (grid[row][col] != 0);
+    } while (grid[i][j] != 0);
 }
 
 void solve(int r, int c) {
     if (squares_filled != 81) {
         answers[r][c]++;
-        // if (answers[r][c] < 10) {
+        //if (answers[r][c] < 10) {
             cout << "trying " << answers[r][c] << " at row " << r 
                  << " col " << c << '\n'; 
-        // }
+        //}
         if (is_valid(r, c)) {
             squares_filled++;
             next(r, c);
             solve(r, c);
         }
         else {
-            // solve(r, c);
+            solve(r, c);
             if (answers[r][c] >= 9) {
                 return;
             }
