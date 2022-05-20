@@ -2,7 +2,6 @@
  * This program takes in a starting position for Sudoku and finds a solution via DFS.
  * Written by thedrdu and rayros2025, 2022-05-17
  * 
- * TODO: Check if input is valid.
  */
 
 #include <iostream>
