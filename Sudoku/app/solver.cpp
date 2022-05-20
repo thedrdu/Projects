@@ -25,15 +25,26 @@ void solve(int r, int c);
 // bool check_cols(); //placeholder, not sure what params will be yet.
 // bool check_boxes(); //placeholder, not sure what params will be yet.
 
-int main() {
-    cout << "Enter filename: ";
+int main(int argc, char *argv[]) {
     string filename;
-    cin >> filename;
+
+    if (argc == 1) {
+        cout << "Enter filename: ";
+        cin >> filename;
+    } 
+    else if (argc == 2) {
+        filename = argv[1];
+    }
+    else {
+        cerr << "ERROR: invalid number of arguments\n";
+        exit(EXIT_FAILURE);
+    }
+
     ifstream infile;
     infile.open(filename);
     if (not infile.is_open()) {
         cerr << "ERROR: not valid file\n";
-        exit (EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     for (int i = 0; i < 9; i++) {
@@ -57,18 +68,21 @@ int main() {
 }
 
 bool is_valid(int row, int col) {
+    cout << "row check\n";
     for (int i = 0; i < 9; i++) {
         if (i != row and grid[i][col] == grid[row][col]) {
             return false;
         }
     }
 
+    cout << "col check\n";
     for (int i = 0; i < 9; i++) {
         if (i != col and grid[row][i] == grid[row][col]) {
             return false;
         }
     }
 
+    cout << "box check\n";
     for (int i = row / 3; i < 3; i++) {
         for (int j = col / 3; j < 3; j++) {
             if (i != row and j != col and grid[i][j] == grid[row][col]) {
@@ -101,13 +115,16 @@ void prev(int &row, int &col) {
 }
 
 void solve(int r, int c) {
+    cout << "squares_filled:" << squares_filled << '\n';
     if (squares_filled != 81) {
         answers[r][c]++;
         // if (answers[r][c] < 10) {
             cout << "trying " << answers[r][c] << " at row " << r 
                  << " col " << c << '\n'; 
         // }
-        if (is_valid(r, c)) {
+        bool your_mom = is_valid(r,c);
+        cout << "valid:" << your_mom << '\n';
+        if (your_mom) {
             squares_filled++;
             next(r, c);
             solve(r, c);
@@ -115,12 +132,11 @@ void solve(int r, int c) {
         else {
             // solve(r, c);
             if (answers[r][c] >= 9) {
-                return;
+                answers[r][c] = 0;
+                squares_filled--;
+                prev(r, c);
+                solve(r, c);
             }
-            answers[r][c] = 0;
-            squares_filled--;
-            prev(r, c);
-            solve(r, c);
         }
     }
 }
