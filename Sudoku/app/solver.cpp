@@ -13,6 +13,8 @@ int grid[9][9];
 int answers[9][9];
 int squares_filled = 0;
 
+void get_start(int &r, int &c);
+
 bool is_valid(int row, int col);
 void next(int &i, int &j);
 void prev(int &i, int &j);
@@ -56,15 +58,31 @@ int main(int argc, char *argv[]) {
     infile.close();
 
     // ok, we have a 2D grid. now what?
-    solve(0, 0);
+    int start_row, start_col;
+    get_start(start_row, start_col);
+
+    solve(start_row, start_col);
+
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
-            cout << answers[i][j];
+            cout << answers[i][j] << ' ';
         }
         cout << endl;
     }
     return 0;
 } 
+
+void get_start(int &r, int &c) {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            if (grid[i][j] == 0) {
+                r = i;
+                c = j;
+                return;
+            }
+        }
+    }
+}
 
 bool is_valid(int row, int col) {
     // cout << "row check\n";
