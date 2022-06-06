@@ -10,22 +10,12 @@
 
 using namespace std;
 
+int gridSize = 9;
 int grid[9][9];
-int answers[9][9];
-int squares_filled = 0;
 
-void get_start(int &r, int &c);
-
-bool is_valid(int row, int col);
-void next(int &i, int &j);
-void prev(int &i, int &j);
-
-void solve(int r, int c);
-
-// these might be unnecessary
-// bool check_rows(); //placeholder, not sure what params will be yet.
-// bool check_cols(); //placeholder, not sure what params will be yet.
-// bool check_boxes(); //placeholder, not sure what params will be yet.
+void print();
+bool solve(int r, int c);
+bool checkAttempt(int r, int c, int insert);
 
 int main(int argc, char *argv[]) {
     string filename;
@@ -52,111 +42,82 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             infile >> grid[i][j];
-            answers[i][j] = grid[i][j];
-            if (grid[i][j] != 0) { squares_filled++; }
         }
     }
     infile.close();
 
     // ok, we have a 2D grid. now what?
-    int start_row, start_col;
-    get_start(start_row, start_col);
-
-    solve(start_row, start_col);
-
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            cout << answers[i][j] << ' ';
-        }
-        cout << endl;
+    if(solve(0, 0)){
+        cout << "Your solution:";
+        print();
+    }
+    else{
+        cout << "No solution.";
     }
     return 0;
 } 
 
-void get_start(int &r, int &c) {
-    for (int i = 0; i < 9; i++) {
-        for (int j = 0; j < 9; j++) {
-            if (grid[i][j] == 0) {
-                r = i;
-                c = j;
-                return;
+void print(){
+    string output = "\n";
+    for(int i = 0; i < gridSize; i++){
+        for(int j = 0; j < gridSize; j++){
+            output += std::to_string(grid[i][j]) + " ";
+            if(j % 3 == 2 && j > 1 && j < 8){
+                output += "| ";
             }
+            // output.TrimEnd();
         }
+        if(i % 3 == 2 && i > 1 && i < 8){
+            output += "\n-----------------------";
+        }
+        output += "\n";
     }
+    cout << output;
 }
 
-bool is_valid(int row, int col) {
-    unordered_set <string> CBA;
-    // cout << "row check\n";
-    for (int i = 0; i < 9; i++) {
-        if (i != row and grid[row][col] != 0 and grid[i][col] == grid[row][col]) {
+bool solve(int r, int c) {
+    if(r == gridSize-1 && c == gridSize-1){ //At the final tile
+        return true;
+    }
+    if(c == gridSize){
+        c = 0; r++;
+    }
+    if(grid[r][c] != 0){
+        return solve(r, c + 1);
+    }
+    for(int i = 1; i < gridSize+1; i++){
+        if(checkAttempt(r, c, i)){
+            grid[r][c] = i;
+            if(solve(r, c + 1)){
+                return true;
+            }
+        }
+        grid[r][c] = 0;
+    }
+    return false;
+}
+
+bool checkAttempt(int r, int c, int insert){
+    //First we check for duplicates along the 4 cardinal directions
+    for(int i = 0; i < gridSize; i++){
+        if(grid[r][i] == insert){
             return false;
         }
     }
-
-    // cout << "col check\n";
-    for (int i = 0; i < 9; i++) {
-        if (i != col and grid[row][col] != 0 and grid[row][i] == grid[row][col]) {
+    for(int i = 0; i < gridSize; i++){
+        if(grid[i][c] == insert){
             return false;
         }
     }
-
-    // cout << "box check\n";
-    for (int i = row / 3; i < 3; i++) {
-        for (int j = col / 3; j < 3; j++) {
-            if (i != row and j != col and grid[row][col] != 0 and grid[i][j] == grid[row][col]) {
+    //Now we check the box for duplicates. Note: Not modular with different box sizes.
+    int startRow = ((r)/3) * 3, startCol = ((c)/3) * 3;
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            if(grid[startRow + i][startCol + j] == insert){
                 return false;
             }
         }
     }
-
+    //No duplicates found!
     return true;
-}
-
-void next(int &i, int &j) {
-    do {
-        i++;
-        if (i >=9) {
-            i = 0;
-            j++;
-        }
-    } while (grid[i][j] != 0);
-}
-
-void prev(int &i, int &j) {
-    do {
-        i--;
-        if (i < 0) {
-            i = 8;
-            j--;
-        }
-    } while (grid[i][j] != 0);
-}
-
-void solve(int r, int c) {
-    cout << "squares_filled:" << squares_filled << '\n';
-    if (squares_filled != 81) {
-        answers[r][c]++;
-        //if (answers[r][c] < 10) {
-            cout << "trying " << answers[r][c] << " at row " << r 
-                 << " col " << c << '\n'; 
-        // }
-        bool your_mom = is_valid(r,c);
-        cout << "valid:" << your_mom << '\n';
-        if (your_mom) {
-            squares_filled++;
-            next(r, c);
-            solve(r, c);
-        }
-        else {
-            cout << "not valid";
-            solve(r, c);
-            if (answers[r][c] >= 9) {
-                answers[r][c] = 0;
-                squares_filled--;
-                prev(r, c);
-                solve(r, c);
-            }
-        }
-    }
 }
