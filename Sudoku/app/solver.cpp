@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <unordered_set>
 
 using namespace std;
 
@@ -85,6 +86,7 @@ void get_start(int &r, int &c) {
 }
 
 bool is_valid(int row, int col) {
+    unordered_set <string> CBA;
     // cout << "row check\n";
     for (int i = 0; i < 9; i++) {
         if (i != row and grid[row][col] != 0 and grid[i][col] == grid[row][col]) {
@@ -147,6 +149,7 @@ void solve(int r, int c) {
             solve(r, c);
         }
         else {
+            cout << "not valid";
             solve(r, c);
             if (answers[r][c] >= 9) {
                 answers[r][c] = 0;
