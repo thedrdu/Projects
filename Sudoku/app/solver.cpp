@@ -68,7 +68,7 @@ void print(){
             // output.TrimEnd();
         }
         if(i % 3 == 2 && i > 1 && i < 8){
-            output += "\n-----------------------";
+            output += "\n---------------------";
         }
         output += "\n";
     }

@@ -8,13 +8,8 @@ using System.Collections;
 class WordleWordProcessor{
 public static int gridSize = 9;
     public static void Main(string[] args){
-        // Console.Write("Input grid length:");
-        // string? gridSizeString = Console.ReadLine();
-        // gridSize = Int32.Parse(gridSizeString);
-
-        Console.Write("Input file name:");
+        Console.Write("Input file name: ");
         string? filename = Console.ReadLine();
-
         int[,] grid = new int[gridSize, gridSize];
 
         using (StreamReader sr = new StreamReader(filename)){
@@ -32,10 +27,12 @@ public static int gridSize = 9;
             }
         }
         //Should have a complete grid at this point.
-        //print(grid);
+        long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
         if(solve(grid, 0, 0)){
+            long endTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             Console.WriteLine("Your solution:");
             print(grid);
+            Console.WriteLine("Sudoku processed in: " + (endTime - startTime) + "ms");
         }
         else{
             Console.WriteLine("No solution.");
@@ -43,17 +40,24 @@ public static int gridSize = 9;
     }
 
     public static void print(int[,] grid){
+        string output = "";
         for(int i = 0; i < gridSize; i++){
-            string output = string.Empty;
             for(int j = 0; j < gridSize; j++){
-                output += (grid[i,j] + " ");
-                output.TrimEnd();
+                output += (grid[i,j]) + " ";
+                if(j % 3 == 2 && j > 1 && j < 8){
+                    output += "| ";
+                }
             }
-            Console.WriteLine(output);
+            if(i % 3 == 2 && i > 1 && i < 8){
+                output += "\n---------------------";
+            }
+            output += "\n";
         }
+        Console.Write(output);
     }
 
     public static bool solve(int[,] grid, int row, int col){
+        //Termination condition: We're at the last tile.
         if(row == gridSize-1 && col == gridSize-1){ return true; }
         if(col == gridSize){ col = 0; row++; }
         if(grid[row,col] != 0){ return solve(grid, row, col + 1); }
@@ -69,6 +73,9 @@ public static int gridSize = 9;
         }
         return false;
     }
+    /*
+        Checks if the 
+    */
     public static bool checkAttempt(int[,] grid, int row, int col, int insert){
         //First we check for duplicates along the 4 cardinal directions
         for(int i = 0; i < gridSize; i++){
