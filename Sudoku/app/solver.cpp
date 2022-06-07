@@ -1,16 +1,16 @@
 /* sudoku solver
- * This program takes in a starting position for Sudoku and finds a solution via DFS.
- * Written by thedrdu and rayros2025, 2022-05-17
- * 
+ * This program takes in a starting position for Sudoku and finds 
+ * a solution via DFS.
+ * Written by thedrdu and rayros2025, 2022-06-07
  */
 
 #include <iostream>
 #include <fstream>
-#include <unordered_set>
+// #include <unordered_set>     TODO: This doesn't seem to be used. Delete?
 
 using namespace std;
 
-int gridSize = 9;
+const int GRIDSIZE = 9;
 int grid[9][9];
 
 void print();
@@ -47,27 +47,31 @@ int main(int argc, char *argv[]) {
     infile.close();
 
     // ok, we have a 2D grid. now what?
-    if(solve(0, 0)){
-        cout << "Your solution:";
+    if (solve(0, 0)) {
+        cout << "Your solution: ";
         print();
     }
-    else{
-        cout << "No solution.";
+    else {
+        cout << "No solution.\n";
     }
+
     return 0;
 } 
 
-void print(){
+
+// print
+// Purpose: print out the sudoku grid, with lines
+void print() {
     string output = "\n";
-    for(int i = 0; i < gridSize; i++){
-        for(int j = 0; j < gridSize; j++){
-            output += std::to_string(grid[i][j]) + " ";
-            if(j % 3 == 2 && j > 1 && j < 8){
+    for (int i = 0; i < GRIDSIZE; i++) {
+        for (int j = 0; j < GRIDSIZE; j++) {
+            output += to_string(grid[i][j]) + " ";
+            if (j % 3 == 2 and 1 < j and j < 8) {
                 output += "| ";
             }
             // output.TrimEnd();
         }
-        if(i % 3 == 2 && i > 1 && i < 8){
+        if (i % 3 == 2 and 1 < i and i < 8) {
             output += "\n---------------------";
         }
         output += "\n";
@@ -75,45 +79,61 @@ void print(){
     cout << output;
 }
 
+// solve
+// Purpose: solve
+// Args: row index and column index
+// Returns: true if grid can be solved, false if not
 bool solve(int r, int c) {
-    if(r == gridSize-1 && c == gridSize-1){ //At the final tile
+    if (r == GRIDSIZE - 1 and c == GRIDSIZE - 1) { //At the final tile
         return true;
     }
-    if(c == gridSize){
-        c = 0; r++;
+
+    if (c == GRIDSIZE) {
+        c = 0; 
+        r++;
     }
-    if(grid[r][c] != 0){
+
+    if (grid[r][c] != 0) {
         return solve(r, c + 1);
     }
-    for(int i = 1; i < gridSize+1; i++){
-        if(checkAttempt(r, c, i)){
+
+    for (int i = 1; i <= GRIDSIZE; i++) {
+        if (checkAttempt(r, c, i)) {
             grid[r][c] = i;
-            if(solve(r, c + 1)){
+
+            if (solve(r, c + 1)) {
                 return true;
             }
         }
         grid[r][c] = 0;
     }
+
     return false;
 }
 
-bool checkAttempt(int r, int c, int insert){
-    //First we check for duplicates along the 4 cardinal directions
-    for(int i = 0; i < gridSize; i++){
-        if(grid[r][i] == insert){
+// checkAttempt
+// Args: a row index, a column index, and a value to be checked
+// Returns: true if insert is a valid answer at [r,c] and false if not
+bool checkAttempt(int r, int c, int insert) {
+    // check for dupes in same column
+    for (int i = 0; i < GRIDSIZE; i++) {
+        if (grid[r][i] == insert) {
             return false;
         }
     }
-    for(int i = 0; i < gridSize; i++){
-        if(grid[i][c] == insert){
+    // check for dupes in same row
+    for (int i = 0; i < GRIDSIZE; i++) {
+        if (grid[i][c] == insert) {
             return false;
         }
     }
-    //Now we check the box for duplicates. Note: Not modular with different box sizes.
-    int startRow = ((r)/3) * 3, startCol = ((c)/3) * 3;
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            if(grid[startRow + i][startCol + j] == insert){
+    // check for dupes in same box
+    // NOTE: this is assuming a standard 9x9 Sudoku grid
+    int startRow = (r / 3) * 3;
+    int startCol = (c / 3) * 3;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (grid[startRow + i][startCol + j] == insert) {
                 return false;
             }
         }
