@@ -5,6 +5,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms> these are for drawing on windows -->
   </PropertyGroup>
 
 </Project>
