@@ -15,8 +15,7 @@ public static int gridSize = 9;
         using (StreamReader sr = new StreamReader(filename)){
             string? line;
             int i = 0, j = 0;
-            while((line = sr.ReadLine()) != null)
-            {
+            while((line = sr.ReadLine()) != null){
                 string[] numbers = line.Split(' ');
                 foreach(string s in numbers){
                     grid[i,j] = Int32.Parse(s);

@@ -1,4 +1,4 @@
-import time
+# import time
 import numpy as np
 
 GRIDSIZE = 9
@@ -40,4 +40,12 @@ def check_attempt(row, col, insert):
     return True #no duplicates found
 
 def main():
-    print
+    filename = input("Input file name: ")
+    with open(filename, mode = 'r', encoding="utf-8") as f:
+        file_lines = f.read().splitlines()
+        # print(file_lines)
+        
+        
+# guard clause
+if __name__ == "__main__":
+    main()
