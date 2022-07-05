@@ -57,13 +57,12 @@ public static int gridSize = 9;
     }
 
     public static bool solve(int[,] grid, int row, int col){
-        //Termination condition: We're at the last tile.
-        if(row == gridSize-1 && col == gridSize-1){ return true; }
-        if(col == gridSize){ col = 0; row++; }
-        if(grid[row,col] != 0){ return solve(grid, row, col + 1); }
+        if(row == gridSize-1 && col == gridSize-1){ return true; } //Stop at the last tile
+        if(col == gridSize){ col = 0; row++; } //Advance to next row once col == gridSize
+        if(grid[row,col] != 0){ return solve(grid, row, col + 1); } 
 
         for(int i = 1; i < gridSize+1; i++){
-            if(checkAttempt(grid, row, col, i)){
+            if(checkAttempt(grid, row, col, i)){ //If placing i at [row, col] is valid
                 grid[row,col] = i;
                 if(solve(grid, row, col+1)){
                     return true;
@@ -74,7 +73,7 @@ public static int gridSize = 9;
         return false;
     }
     /*
-        Checks if the 
+        Checks if the insertion to be attempted results in a valid sudoku grid
     */
     public static bool checkAttempt(int[,] grid, int row, int col, int insert){
         //First we check for duplicates along the 4 cardinal directions
@@ -88,7 +87,7 @@ public static int gridSize = 9;
                 return false;
             }
         }
-        //Now we check the box for duplicates. Note: Not modular with different box sizes.
+        //Now we check the box for duplicates. Note: Not modular with different box sizes
         int startRow = ((row)/3) * 3, startCol = ((col)/3) * 3;
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
