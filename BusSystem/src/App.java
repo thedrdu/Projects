@@ -1,6 +1,9 @@
 import java.util.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+
+//Ideas: Add fare, add time, add stops not available at certain hours, find shortest/cheapest/fastest routes.
 
 public class App {
     public static ArrayList<Stop> stopList = new ArrayList<Stop>();
@@ -88,24 +91,63 @@ public class App {
 
         // Tests below
 
-        printStopList();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter a command(print/next/route/exit):");
+        String input = reader.readLine();
 
-        //Print next stops from A
-        for(Stop s : getNext("A")){
-            System.out.print(s.getName() + " ");
-        }
-        System.out.println();
+        while(!input.equals("exit")){
+            switch(input){
+                case "print":
+                    printStopList();
+                    break;
+                case "next":
+                    System.out.print("Type a stop:");
+                    String stopinput = reader.readLine();
+                    for(Stop s : getNext(stopinput)){
+                        System.out.print(s.getName() + " ");
+                    }
+                    System.out.println();
+                    break;
+                case "route":
+                    System.out.print("Type a starting stop:");
+                    String start = reader.readLine();
+                    System.out.print("Type an ending stop:");
+                    String end = reader.readLine();
 
-        //Find route from A to F
-        ArrayList<Stop> route = findRoute("A", "F"); //Returns empty arraylist if route is not possible
-        String output = "";
-        for(Stop s : route){
-            output += s.getName() + " -> ";
+                    ArrayList<Stop> route = findRoute(start, end); //Returns empty arraylist if route is not possible
+                    String output = "";
+                    for(Stop s : route){
+                        output += s.getName() + " -> ";
+                    }
+                    if(output.length() > 0){
+                        output = output.substring(0, output.length() - 4);
+                    }
+                    System.out.println(output);
+                    break;
+            }
+            System.out.print("Enter a command(print/next/route/exit):");
+            input = reader.readLine();
         }
-        if(output.length() > 0){
-            output = output.substring(0, output.length() - 4);
-        }
-        System.out.println(output);
+        return;
+
+        // printStopList();
+
+        // //Print next stops from A
+        // for(Stop s : getNext("A")){
+        //     System.out.print(s.getName() + " ");
+        // }
+        // System.out.println();
+
+        // //Find route from A to F
+        // ArrayList<Stop> route = findRoute("A", "F"); //Returns empty arraylist if route is not possible
+        // String output = "";
+        // for(Stop s : route){
+        //     output += s.getName() + " -> ";
+        // }
+        // if(output.length() > 0){
+        //     output = output.substring(0, output.length() - 4);
+        // }
+        // System.out.println(output);
 
     }
 }
