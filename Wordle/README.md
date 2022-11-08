@@ -1,6 +1,6 @@
 # Wordle Solver
 
-Given a list of words, gives the best guesses available at each step based on user input. <br />
+Given a list of words, the program uses one-shot learning to compute weights, and gives the best guesses available at each step based on user input. <br />
 Available in C# and Python(outdated).
 
 ## Instructions
