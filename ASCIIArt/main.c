@@ -1,4 +1,6 @@
-//CHARACTERS USED: $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
+//Author(s): thedrdu
+//Year of Creation: 2022
+
 //todo: input custom width and height output size, different shading styles, width:height ratio processing
 //todo: check this out: https://stackoverflow.com/questions/32987103/image-to-ascii-art-conversion
 //todo: make this a webapp
