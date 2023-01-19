@@ -5,6 +5,9 @@
 //todo: check this out: https://stackoverflow.com/questions/32987103/image-to-ascii-art-conversion
 //todo: make this a webapp
 
+#define WIDTH 1024
+#define HEIGHT 1024
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -34,16 +37,17 @@ int main(int argc, char** argv){
 
   int width, height, channels;
   unsigned char *img = stbi_load(argv[1], &width, &height, &channels, 3);
-  stbir_resize_uint8(img, width, height, 0, img, 128, 128, 0, 3);
+  printf("Loaded image with a width of %dpx, a height of %dpx and %d channels\n", width, height, channels);
+  stbir_resize_uint8(img, width, height, 0, img, 1024, 1024, 0, 3);
 
   if(img == NULL){
     printf("Error in loading the image\n");
     exit(1);
   }
 
-  printf("Loaded image with a width of %dpx, a height of %dpx and %d channels\n", width, height, channels);
-  width = 128;
-  height = 128;
+  
+  width = WIDTH;
+  height = HEIGHT;
   printf("Resized image to a width of %dpx, and a height of %dpx", width, height);
 
   // size_t img_size = width * height * channels;

@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "ft2build.h": "c"
+        "ft2build.h": "c",
+        "stb_image.h": "c"
     },
     "cmake.configureOnOpen": false
 }
