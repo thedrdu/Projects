@@ -29,6 +29,8 @@ char getChar(int r, int g, int b){
   return outputChars[brightness];
 }
 
+
+//args: {source image file} [output text file]
 int main(int argc, char** argv){
   if(argc < 2){
     printf("Please enter a filename!\n");
@@ -38,7 +40,7 @@ int main(int argc, char** argv){
   int width, height, channels;
   unsigned char *img = stbi_load(argv[1], &width, &height, &channels, 3);
   printf("Loaded image with a width of %dpx, a height of %dpx and %d channels\n", width, height, channels);
-  stbir_resize_uint8(img, width, height, 0, img, 1024, 1024, 0, 3);
+  // stbir_resize_uint8(img, width, height, 0, img, 1024, 1024, 0, 3);
 
   if(img == NULL){
     printf("Error in loading the image\n");
@@ -46,9 +48,9 @@ int main(int argc, char** argv){
   }
 
   
-  width = WIDTH;
-  height = HEIGHT;
-  printf("Resized image to a width of %dpx, and a height of %dpx", width, height);
+  // width = WIDTH;
+  // height = HEIGHT;
+  // printf("Resized image to a width of %dpx, and a height of %dpx", width, height);
 
   // size_t img_size = width * height * channels;
   // int gray_channels = channels == 4 ? 2 : 1;
@@ -67,7 +69,12 @@ int main(int argc, char** argv){
   // stbi_write_jpg("pardo.jpg", width, height, gray_channels, gray_img, 100);
 
   FILE *fp = NULL;
-  fp = fopen("textFile.txt" , "w");
+  if(argc == 3){
+    fp = fopen(argv[2], "w");
+  }
+  else{
+    fp = fopen("textFile.txt" , "w");
+  }
   int bytePerPixel = 1;
 
   for(int i = 0; i < height; i++){
