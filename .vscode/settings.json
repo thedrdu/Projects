@@ -3,7 +3,17 @@
         "filesystem": "cpp",
         "ftheader.h": "c",
         "freetype.h": "c",
-        "fttypes.h": "c"
+        "fttypes.h": "c",
+        "string.h": "c",
+        "stb_image_write.h": "c",
+        "stb_image_resize.h": "c",
+        "stb_image.h": "c",
+        "ft2build.h": "c",
+        "*.keepme": "c",
+        "main.h": "c",
+        "unistd.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c"
     },
     "cmake.sourceDirectory": "${workspaceFolder}/ASCIIArt/freetype-2.12.1"
 }

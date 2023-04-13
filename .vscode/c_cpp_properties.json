@@ -5,7 +5,10 @@
             "includePath": [
                 "${default}",
                 "${workspaceFolder}/ASCIIArt/freetype-2.12.1/include",
-                "${workspaceFolder}/ASCIIArt"
+                "${workspaceFolder}/ASCIIArt",
+                "${workspaceFolder}/ASCIIArt/lib",
+                "${workspaceFolder}/ASCIIArt/lib/freetype-2.13.0/include",
+                "${workspaceFolder}/ASCIIArt/lib/stb"
             ],
             "defines": [],
             "macFrameworkPath": [
@@ -14,7 +17,8 @@
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "macos-clang-arm64"
+            "intelliSenseMode": "macos-clang-arm64",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4
