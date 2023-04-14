@@ -4,7 +4,6 @@
             "name": "Mac",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/ASCIIArt/freetype-2.12.1/include",
                 "${workspaceFolder}/ASCIIArt",
                 "${workspaceFolder}/ASCIIArt/lib",
                 "${workspaceFolder}/ASCIIArt/lib/freetype-2.13.0/include",

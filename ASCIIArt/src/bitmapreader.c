@@ -6,14 +6,27 @@
 
 #include FT_FREETYPE_H
 
-int computeBrightness(char* font_file){
+int compare_characters(const void* a, const void* b){
+    CharacterBrightness* char_a = (CharacterBrightness*)a;
+    CharacterBrightness* char_b = (CharacterBrightness*)b;
+    if(char_a->brightness != char_b->brightness){
+        return char_a->brightness - char_b->brightness;
+    }
+    return char_a->character - char_b->character;
+}
+
+
+int* computeBrightness(char* font_file, ErrorCode* errorCode){
+    CharacterBrightness brightness_values[96];
+
     FT_Library library;
     FT_Error error = FT_Init_FreeType(&library);
     if(error){
-        fprintf(stderr, "Error initializing FreeType library\n");
-        return -1;
+        // fprintf(stderr, "Error initializing FreeType library\n");
+        *errorCode = ERROR_INIT_FREETYPE;
+        return NULL;
     }
-    printf("[%s]\n", font_file);
+    // printf("[%s]\n", font_file);
 
     // //Open the TTF file
     FT_Face face;
@@ -22,15 +35,17 @@ int computeBrightness(char* font_file){
     strcat(font_filepath, font_file);
     error = FT_New_Face(library, font_filepath, 0, &face);
     if(error){
-        fprintf(stderr, "Error loading TTF file\n");
-        return -1;
+        // fprintf(stderr, "Error loading TTF file\n");
+        *errorCode = ERROR_LOAD_TTF;
+        return NULL;
     }
 
     //Set the font size(64 in this case).
     error = FT_Set_Char_Size(face, 0, 16 * 64, 0, 0);
     if(error){
-        fprintf(stderr, "Error setting font size\n");
-        return 1;
+        // fprintf(stderr, "Error setting font size\n");
+        *errorCode = ERROR_SET_FONT_SIZE;
+        return NULL;
     }
 
     //Iterate through all ASCII characters
@@ -39,8 +54,9 @@ int computeBrightness(char* font_file){
         //Render the character
         error = FT_Load_Char(face, i, FT_LOAD_RENDER);
         if(error){
-            fprintf(stderr, "Error rendering character '%c'\n", i);
-            continue;
+            // fprintf(stderr, "Error rendering character '%c'\n", i);
+            *errorCode = ERROR_RENDER_CHAR;
+            return NULL;
         }
 
         //Calculate the number of black pixels in the character bitmap
@@ -62,11 +78,20 @@ int computeBrightness(char* font_file){
 
         //Calculate the brightness value for the character
         int brightness = (int)((float)black_pixels / max_black_pixels * 100);
-        printf("Character '%c': %d%% brightness\n", i, brightness);
+        CharacterBrightness c = {i, brightness};
+        brightness_values[i - 32] = c;
+        // printf("Character '%c': %d%% brightness\n", i, brightness);
+    }
+    qsort(brightness_values, 96, sizeof(CharacterBrightness), compare_characters);
+
+    for(int i = 0; i < 96; i++){
+        int brightness = brightness_values[i].brightness;
+        char c = brightness_values[i].character; // Convert index back to character code
+        printf("Character '%c': %d%% brightness\n", c, brightness);
     }
 
     //Cleanup
     FT_Done_Face(face);
     FT_Done_FreeType(library);
-    return 0;
+    return brightness_values;
 }

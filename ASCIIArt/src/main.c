@@ -5,9 +5,6 @@
 //todo: check this out: https://stackoverflow.com/questions/32987103/image-to-ascii-art-conversion
 //todo: make this a webapp
 
-#define WIDTH 1024
-#define HEIGHT 1024
-
 #include "../include/main.h"
 #include <stdio.h>
 #include <string.h>
@@ -53,9 +50,11 @@ int main(int argc, char** argv){
   height = HEIGHT;
   printf("Resized image to a width of %dpx, and a height of %dpx\n", WIDTH, HEIGHT);
 
-
-  computeBrightness(argv[2]);
-
+  ErrorCode error = SUCCESS;
+  computeBrightness(argv[2], &error);
+  if(error != SUCCESS){
+    printf("Error code: %d\n", error);
+  }
 
   char *output_directory = "../output/";
   char fullpath[100];
