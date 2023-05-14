@@ -5,7 +5,7 @@ This is a small interactive commandline program written in Java, where users hav
 
 ## Prerequisites
 
-This program will only work on any machine with Java properly installed and configured. 
+This program will run on any machine with Java properly installed and configured. 
 
 
 ## Running the Program
